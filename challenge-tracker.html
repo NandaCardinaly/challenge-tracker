@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #F77E53;
+            --primary-light: #FFB59E;
+            --primary-dark: #E65C2F;
+            --secondary: #5B9A8B;
+            --background: #FFF8F3;
+            --surface: #FFFFFF;
+            --text-primary: #2C3E50;
+            --text-secondary: #7F8C9A;
+            --success: #6BCF7F;
+            --border: #E8DED2;
+            --shadow: rgba(247, 126, 83, 0.15);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .main-content {
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        /* Create Challenge Form */
+        .create-challenge {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--background);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px rgba(247, 126, 83, 0.1);
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(247, 126, 83, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(247, 126, 83, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(91, 154, 139, 0.3);
+            margin-left: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #4A8374;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Challenges List */
+        .challenges-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .challenge-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px var(--shadow);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .challenge-card h3 {
+            font-family: 'DM Serif Display', serif;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .challenge-card .dates {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-card .streak {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .challenge-card .delete-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .challenge-card .delete-btn:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Calendar View */
+        .calendar-view {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .calendar-header h2 {
+            font-family: 'DM Serif Display', serif;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: var(--background);
+            border: 2px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .month-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 150px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            max-width: 100%;
+        }
+
+        .day-label {
+            text-align: center;
+            font-weight: 700;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .day-cell {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day-cell.empty {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .day-cell.completed {
+            background: linear-gradient(135deg, rgba(107, 207, 127, 0.1), rgba(107, 207, 127, 0.2));
+            border-color: var(--success);
+        }
+
+        .day-cell.future {
+            opacity: 0.5;
+        }
+
+        .day-number {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .day-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-checkbox input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        .day-checkbox label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .day-notes {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .day-notes label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .day-notes textarea {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.85rem;
+            resize: none;
+            background: var(--surface);
+            transition: all 0.3s ease;
+        }
+
+        .day-notes textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(247, 126, 83, 0.1);
+        }
+
+        .streak-display {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            border-radius: 16px;
+            color: white;
+        }
+
+        .streak-display h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .streak-display p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            margin-bottom: 1.5rem;
+        }
+
+        .backup-section {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px var(--shadow);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .backup-section h3 {
+            font-family: 'DM Serif Display', serif;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .backup-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .calendar-grid {
+                gap: 0.4rem;
+            }
+
+            .day-cell {
+                min-height: 140px;
+                padding: 0.5rem;
+                border-radius: 8px;
+            }
+
+            .day-number {
+                font-size: 0.95rem;
+            }
+
+            .day-notes textarea {
+                font-size: 0.75rem;
+            }
+
+            .challenges-list {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-view {
+                padding: 1.5rem;
+            }
+
+            .create-challenge {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .day-cell {
+                min-height: 150px;
+                padding: 0.6rem;
+            }
+
+            .calendar-grid {
+                gap: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [challenges, setChallenges] = useState([]);
+            const [currentView, setCurrentView] = useState('list'); // 'list' or 'calendar'
+            const [selectedChallenge, setSelectedChallenge] = useState(null);
+            const [currentMonth, setCurrentMonth] = useState(0); // Relative to challenge start
+            const [formData, setFormData] = useState({
+                name: '',
+                startDate: '',
+                endDate: ''
+            });
+
+            // Load challenges from localStorage
+            useEffect(() => {
+                const saved = localStorage.getItem('challenges');
+                if (saved) {
+                    setChallenges(JSON.parse(saved));
+                }
+            }, []);
+
+            // Save challenges to localStorage
+            useEffect(() => {
+                localStorage.setItem('challenges', JSON.stringify(challenges));
+            }, [challenges]);
+
+            const handleCreateChallenge = (e) => {
+                e.preventDefault();
+                if (!formData.name || !formData.startDate || !formData.endDate) return;
+
+                const newChallenge = {
+                    id: Date.now(),
+                    name: formData.name,
+                    startDate: formData.startDate,
+                    endDate: formData.endDate,
+                    days: {},
+                    streak: 0
+                };
+
+                setChallenges([...challenges, newChallenge]);
+                setFormData({ name: '', startDate: '', endDate: '' });
+            };
+
+            const handleDeleteChallenge = (id) => {
+                if (window.confirm('Tem certeza que deseja excluir este desafio?')) {
+                    setChallenges(challenges.filter(c => c.id !== id));
+                }
+            };
+
+            const openChallenge = (challenge) => {
+                setSelectedChallenge(challenge);
+                setCurrentMonth(0);
+                setCurrentView('calendar');
+            };
+
+            const updateDay = (date, field, value) => {
+                const updated = challenges.map(c => {
+                    if (c.id === selectedChallenge.id) {
+                        const newDays = { ...c.days };
+                        if (!newDays[date]) newDays[date] = {};
+                        newDays[date][field] = value;
+                        
+                        // Calculate streak
+                        const streak = calculateStreak(newDays, c.startDate);
+                        
+                        return { ...c, days: newDays, streak };
+                    }
+                    return c;
+                });
+                
+                setChallenges(updated);
+                setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
+            };
+
+            const calculateStreak = (days, startDate) => {
+                let streak = 0;
+                let currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
+                
+                while (currentDate >= new Date(startDate)) {
+                    const dateStr = currentDate.toISOString().split('T')[0];
+                    if (days[dateStr]?.completed) {
+                        streak++;
+                    } else {
+                        break;
+                    }
+                    currentDate.setDate(currentDate.getDate() - 1);
+                }
+                
+                return streak;
+            };
+
+            const downloadBackup = () => {
+                const dataStr = JSON.stringify(challenges, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `challenge-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                URL.revokeObjectURL(url);
+            };
+
+            const emailBackup = () => {
+                const dataStr = JSON.stringify(challenges, null, 2);
+                const subject = encodeURIComponent('Challenge Tracker - Backup');
+                const body = encodeURIComponent(`Aqui está o backup dos seus desafios:\n\n${dataStr}`);
+                window.location.href = `mailto:?subject=${subject}&body=${body}`;
+            };
+
+            const restoreBackup = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            if (window.confirm('Isso substituirá todos os seus desafios atuais. Continuar?')) {
+                                setChallenges(data);
+                            }
+                        } catch (error) {
+                            alert('Erro ao ler o arquivo de backup');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+
+            if (currentView === 'calendar' && selectedChallenge) {
+                return <CalendarView 
+                    challenge={selectedChallenge}
+                    currentMonth={currentMonth}
+                    setCurrentMonth={setCurrentMonth}
+                    updateDay={updateDay}
+                    onBack={() => setCurrentView('list')}
+                />;
+            }
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>Challenge Tracker</h1>
+                        <p>Acompanhe seus desafios diários com mindfulness</p>
+                    </div>
+
+                    <div className="main-content">
+                        <div className="create-challenge">
+                            <h2 style={{ fontFamily: 'DM Serif Display, serif', color: 'var(--primary)', marginBottom: '1.5rem' }}>
+                                Criar Novo Desafio
+                            </h2>
+                            <form onSubmit={handleCreateChallenge}>
+                                <div className="form-group">
+                                    <label>Nome do Desafio</label>
+                                    <input
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        placeholder="Ex: Meditar 10 minutos por dia"
+                                    />
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                                    <div className="form-group">
+                                        <label>Data de Início</label>
+                                        <input
+                                            type="date"
+                                            value={formData.startDate}
+                                            onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Data de Término</label>
+                                        <input
+                                            type="date"
+                                            value={formData.endDate}
+                                            onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                                <button type="submit" className="btn btn-primary">
+                                    Criar Desafio
+                                </button>
+                            </form>
+                        </div>
+
+                        {challenges.length > 0 && (
+                            <div className="challenges-list">
+                                {challenges.map(challenge => (
+                                    <div key={challenge.id} className="challenge-card" onClick={() => openChallenge(challenge)}>
+                                        <button 
+                                            className="delete-btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteChallenge(challenge.id);
+                                            }}
+                                        >
+                                            ×
+                                        </button>
+                                        <h3>{challenge.name}</h3>
+                                        <div className="dates">
+                                            {new Date(challenge.startDate).toLocaleDateString('pt-BR')} até{' '}
+                                            {new Date(challenge.endDate).toLocaleDateString('pt-BR')}
+                                        </div>
+                                        <div className="streak">
+                                            🔥 {challenge.streak} {challenge.streak === 1 ? 'dia' : 'dias'}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {challenges.length > 0 && (
+                            <div className="backup-section">
+                                <h3>Backup dos Dados</h3>
+                                <div className="backup-buttons">
+                                    <button className="btn btn-secondary" onClick={downloadBackup}>
+                                        📥 Baixar Backup (JSON)
+                                    </button>
+                                    <button className="btn btn-secondary" onClick={emailBackup}>
+                                        📧 Enviar por Email
+                                    </button>
+                                    <label className="btn btn-outline" style={{ cursor: 'pointer', display: 'inline-block' }}>
+                                        📤 Restaurar Backup
+                                        <input 
+                                            type="file" 
+                                            accept=".json" 
+                                            onChange={restoreBackup}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function CalendarView({ challenge, currentMonth, setCurrentMonth, updateDay, onBack }) {
+            const start = new Date(challenge.startDate);
+            const end = new Date(challenge.endDate);
+            
+            // Calculate months needed
+            const totalMonths = Math.ceil((end - start) / (1000 * 60 * 60 * 24 * 30));
+            
+            // Get current month to display
+            const displayDate = new Date(start);
+            displayDate.setMonth(displayDate.getMonth() + currentMonth);
+            
+            const year = displayDate.getFullYear();
+            const month = displayDate.getMonth();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+            
+            const days = [];
+            
+            // Empty cells before first day
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                days.push({ empty: true, key: `empty-${i}` });
+            }
+            
+            // Actual days
+            for (let i = 1; i <= daysInMonth; i++) {
+                const currentDate = new Date(year, month, i);
+                const dateStr = currentDate.toISOString().split('T')[0];
+                const isInRange = currentDate >= new Date(challenge.startDate) && currentDate <= new Date(challenge.endDate);
+                const isFuture = currentDate > new Date();
+                
+                days.push({
+                    day: i,
+                    date: dateStr,
+                    data: challenge.days[dateStr] || {},
+                    isInRange,
+                    isFuture,
+                    key: dateStr
+                });
+            }
+            
+            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            
+            return (
+                <div className="app-container">
+                    <button className="btn btn-outline back-btn" onClick={onBack}>
+                        ← Voltar
+                    </button>
+                    
+                    <div className="calendar-view">
+                        <div className="calendar-header">
+                            <h2>{challenge.name}</h2>
+                            <div className="calendar-nav">
+                                <button 
+                                    className="nav-btn"
+                                    onClick={() => setCurrentMonth(currentMonth - 1)}
+                                    disabled={currentMonth === 0}
+                                >
+                                    ‹
+                                </button>
+                                <span className="month-label">
+                                    {monthNames[month]} {year}
+                                </span>
+                                <button 
+                                    className="nav-btn"
+                                    onClick={() => setCurrentMonth(currentMonth + 1)}
+                                    disabled={currentMonth >= totalMonths - 1}
+                                >
+                                    ›
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div className="calendar-grid">
+                            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(day => (
+                                <div key={day} className="day-label">{day}</div>
+                            ))}
+                            
+                            {days.map(dayData => {
+                                if (dayData.empty) {
+                                    return <div key={dayData.key} className="day-cell empty"></div>;
+                                }
+                                
+                                const { day, date, data, isInRange, isFuture } = dayData;
+                                
+                                if (!isInRange) {
+                                    return <div key={date} className="day-cell empty"></div>;
+                                }
+                                
+                                return (
+                                    <div 
+                                        key={date} 
+                                        className={`day-cell ${data.completed ? 'completed' : ''} ${isFuture ? 'future' : ''}`}
+                                    >
+                                        <div className="day-number">{day}</div>
+                                        {!isFuture && (
+                                            <>
+                                                <div className="day-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`check-${date}`}
+                                                        checked={data.completed || false}
+                                                        onChange={(e) => updateDay(date, 'completed', e.target.checked)}
+                                                    />
+                                                    <label htmlFor={`check-${date}`}>Consegui!</label>
+                                                </div>
+                                                <div className="day-notes">
+                                                    <label>Como você se sentiu?</label>
+                                                    <textarea
+                                                        value={data.notes || ''}
+                                                        onChange={(e) => updateDay(date, 'notes', e.target.value)}
+                                                        placeholder="Escreva aqui..."
+                                                    />
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        
+                        <div className="streak-display">
+                            <h3>🔥 {challenge.streak}</h3>
+                            <p>
+                                {challenge.streak === 0 && 'Comece sua jornada!'}
+                                {challenge.streak === 1 && '1 dia de ofensiva'}
+                                {challenge.streak > 1 && `${challenge.streak} dias de ofensiva`}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
