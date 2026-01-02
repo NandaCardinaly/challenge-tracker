@@ -324,7 +324,7 @@
             border: 2px solid var(--border);
             position: relative;
             transition: all 0.3s ease;
-            min-height: 160px;
+            min-height: 200px;
             display: flex;
             flex-direction: column;
         }
@@ -399,6 +399,262 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(247, 126, 83, 0.1);
+        }
+
+        /* Tasks */
+        .day-tasks {
+            margin-bottom: 0.5rem;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4rem;
+            margin-bottom: 0.3rem;
+            padding: 0.3rem;
+            background: var(--surface);
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .task-item input[type="checkbox"] {
+            margin-top: 0.2rem;
+            cursor: pointer;
+            accent-color: var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .task-item label {
+            flex: 1;
+            cursor: pointer;
+            word-break: break-word;
+        }
+
+        .task-item.completed label {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-delete {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .task-delete:hover {
+            opacity: 1;
+        }
+
+        .add-task-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+
+        .add-task-btn:hover {
+            background: #4A8374;
+            transform: scale(1.02);
+        }
+
+        /* Exceptions Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-family: 'DM Serif Display', serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .exception-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .exception-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .weekday-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .weekday-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--background);
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .weekday-checkbox:hover {
+            border-color: var(--primary);
+        }
+
+        .weekday-checkbox.selected {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .weekday-checkbox input {
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .weekday-checkbox label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .specific-dates-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .date-exception-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background: var(--background);
+            border-radius: 8px;
+        }
+
+        .date-exception-item button {
+            background: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .add-date-exception {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-date-exception input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .add-date-exception button {
+            padding: 0.5rem 1rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .exceptions-btn {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .exceptions-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .day-exception-badge {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--text-secondary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
         }
 
         .streak-display {
@@ -565,7 +821,11 @@
                     startDate: formData.startDate,
                     endDate: formData.endDate,
                     days: {},
-                    streak: 0
+                    streak: 0,
+                    exceptions: {
+                        specificDates: [], // Array de datas específicas em formato ISO
+                        weekdays: [] // Array de dias da semana: 0=Dom, 1=Seg, etc
+                    }
                 };
 
                 setChallenges([...challenges, newChallenge]);
@@ -592,7 +852,7 @@
                         newDays[date][field] = value;
                         
                         // Calculate streak
-                        const streak = calculateStreak(newDays, c.startDate);
+                        const streak = calculateStreak(newDays, c.startDate, c.exceptions);
                         
                         return { ...c, days: newDays, streak };
                     }
@@ -603,13 +863,96 @@
                 setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
             };
 
-            const calculateStreak = (days, startDate) => {
+            const addTask = (date) => {
+                const taskName = prompt('Qual é a tarefa para este dia?');
+                if (!taskName) return;
+
+                const updated = challenges.map(c => {
+                    if (c.id === selectedChallenge.id) {
+                        const newDays = { ...c.days };
+                        if (!newDays[date]) newDays[date] = {};
+                        if (!newDays[date].tasks) newDays[date].tasks = [];
+                        
+                        newDays[date].tasks.push({
+                            id: Date.now(),
+                            name: taskName,
+                            completed: false
+                        });
+                        
+                        return { ...c, days: newDays };
+                    }
+                    return c;
+                });
+                
+                setChallenges(updated);
+                setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
+            };
+
+            const toggleTask = (date, taskId) => {
+                const updated = challenges.map(c => {
+                    if (c.id === selectedChallenge.id) {
+                        const newDays = { ...c.days };
+                        if (newDays[date]?.tasks) {
+                            newDays[date].tasks = newDays[date].tasks.map(task =>
+                                task.id === taskId ? { ...task, completed: !task.completed } : task
+                            );
+                        }
+                        return { ...c, days: newDays };
+                    }
+                    return c;
+                });
+                
+                setChallenges(updated);
+                setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
+            };
+
+            const deleteTask = (date, taskId) => {
+                const updated = challenges.map(c => {
+                    if (c.id === selectedChallenge.id) {
+                        const newDays = { ...c.days };
+                        if (newDays[date]?.tasks) {
+                            newDays[date].tasks = newDays[date].tasks.filter(task => task.id !== taskId);
+                        }
+                        return { ...c, days: newDays };
+                    }
+                    return c;
+                });
+                
+                setChallenges(updated);
+                setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
+            };
+
+            const updateExceptions = (exceptions) => {
+                const updated = challenges.map(c => {
+                    if (c.id === selectedChallenge.id) {
+                        return { ...c, exceptions };
+                    }
+                    return c;
+                });
+                
+                setChallenges(updated);
+                setSelectedChallenge(updated.find(c => c.id === selectedChallenge.id));
+            };
+
+            const calculateStreak = (days, startDate, exceptions = { specificDates: [], weekdays: [] }) => {
                 let streak = 0;
                 let currentDate = new Date();
                 currentDate.setHours(0, 0, 0, 0);
                 
                 while (currentDate >= new Date(startDate)) {
                     const dateStr = currentDate.toISOString().split('T')[0];
+                    const dayOfWeek = currentDate.getDay();
+                    
+                    // Check if this day is an exception
+                    const isException = exceptions.specificDates.includes(dateStr) || 
+                                       exceptions.weekdays.includes(dayOfWeek);
+                    
+                    if (isException) {
+                        // Exceptions don't break the streak, just skip them
+                        currentDate.setDate(currentDate.getDate() - 1);
+                        continue;
+                    }
+                    
                     if (days[dateStr]?.completed) {
                         streak++;
                     } else {
@@ -663,6 +1006,10 @@
                     currentMonth={currentMonth}
                     setCurrentMonth={setCurrentMonth}
                     updateDay={updateDay}
+                    addTask={addTask}
+                    toggleTask={toggleTask}
+                    deleteTask={deleteTask}
+                    updateExceptions={updateExceptions}
                     onBack={() => setCurrentView('list')}
                 />;
             }
@@ -766,7 +1113,10 @@
             );
         }
 
-        function CalendarView({ challenge, currentMonth, setCurrentMonth, updateDay, onBack }) {
+        function CalendarView({ challenge, currentMonth, setCurrentMonth, updateDay, addTask, toggleTask, deleteTask, updateExceptions, onBack }) {
+            const [showExceptionsModal, setShowExceptionsModal] = React.useState(false);
+            const [newExceptionDate, setNewExceptionDate] = React.useState('');
+            
             const start = new Date(challenge.startDate);
             const end = new Date(challenge.endDate);
             
@@ -798,6 +1148,11 @@
                 const dateStr = currentDate.toISOString().split('T')[0];
                 const isInRange = currentDate >= new Date(challenge.startDate) && currentDate <= new Date(challenge.endDate);
                 const isFuture = currentDate > new Date();
+                const dayOfWeek = currentDate.getDay();
+                
+                // Check if this day is an exception
+                const isException = challenge.exceptions?.specificDates?.includes(dateStr) || 
+                                   challenge.exceptions?.weekdays?.includes(dayOfWeek);
                 
                 days.push({
                     day: i,
@@ -805,12 +1160,48 @@
                     data: challenge.days[dateStr] || {},
                     isInRange,
                     isFuture,
+                    isException,
                     key: dateStr
                 });
             }
             
             const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
                               'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            
+            const weekdayNames = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+            const handleWeekdayToggle = (dayIndex) => {
+                const currentWeekdays = challenge.exceptions?.weekdays || [];
+                const newWeekdays = currentWeekdays.includes(dayIndex)
+                    ? currentWeekdays.filter(d => d !== dayIndex)
+                    : [...currentWeekdays, dayIndex];
+                
+                updateExceptions({
+                    ...challenge.exceptions,
+                    weekdays: newWeekdays
+                });
+            };
+
+            const handleAddSpecificDate = () => {
+                if (!newExceptionDate) return;
+                
+                const currentDates = challenge.exceptions?.specificDates || [];
+                if (!currentDates.includes(newExceptionDate)) {
+                    updateExceptions({
+                        ...challenge.exceptions,
+                        specificDates: [...currentDates, newExceptionDate]
+                    });
+                }
+                setNewExceptionDate('');
+            };
+
+            const handleRemoveSpecificDate = (date) => {
+                const currentDates = challenge.exceptions?.specificDates || [];
+                updateExceptions({
+                    ...challenge.exceptions,
+                    specificDates: currentDates.filter(d => d !== date)
+                });
+            };
             
             return (
                 <div className="app-container">
@@ -821,24 +1212,29 @@
                     <div className="calendar-view">
                         <div className="calendar-header">
                             <h2>{challenge.name}</h2>
-                            <div className="calendar-nav">
-                                <button 
-                                    className="nav-btn"
-                                    onClick={() => setCurrentMonth(currentMonth - 1)}
-                                    disabled={currentMonth === 0}
-                                >
-                                    ‹
+                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                <button className="exceptions-btn" onClick={() => setShowExceptionsModal(true)}>
+                                    ⚙️ Exceções
                                 </button>
-                                <span className="month-label">
-                                    {monthNames[month]} {year}
-                                </span>
-                                <button 
-                                    className="nav-btn"
-                                    onClick={() => setCurrentMonth(currentMonth + 1)}
-                                    disabled={currentMonth >= totalMonths - 1}
-                                >
-                                    ›
-                                </button>
+                                <div className="calendar-nav">
+                                    <button 
+                                        className="nav-btn"
+                                        onClick={() => setCurrentMonth(currentMonth - 1)}
+                                        disabled={currentMonth === 0}
+                                    >
+                                        ‹
+                                    </button>
+                                    <span className="month-label">
+                                        {monthNames[month]} {year}
+                                    </span>
+                                    <button 
+                                        className="nav-btn"
+                                        onClick={() => setCurrentMonth(currentMonth + 1)}
+                                        disabled={currentMonth >= totalMonths - 1}
+                                    >
+                                        ›
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
@@ -852,7 +1248,7 @@
                                     return <div key={dayData.key} className="day-cell empty"></div>;
                                 }
                                 
-                                const { day, date, data, isInRange, isFuture } = dayData;
+                                const { day, date, data, isInRange, isFuture, isException } = dayData;
                                 
                                 if (!isInRange) {
                                     return <div key={date} className="day-cell empty"></div>;
@@ -863,9 +1259,37 @@
                                         key={date} 
                                         className={`day-cell ${data.completed ? 'completed' : ''} ${isFuture ? 'future' : ''}`}
                                     >
+                                        {isException && <div className="day-exception-badge">Exceção</div>}
                                         <div className="day-number">{day}</div>
-                                        {!isFuture && (
+                                        {!isFuture && !isException && (
                                             <>
+                                                <button className="add-task-btn" onClick={() => addTask(date)}>
+                                                    + Tarefa
+                                                </button>
+                                                
+                                                {data.tasks && data.tasks.length > 0 && (
+                                                    <div className="day-tasks">
+                                                        {data.tasks.map(task => (
+                                                            <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={task.completed}
+                                                                    onChange={() => toggleTask(date, task.id)}
+                                                                    id={`task-${task.id}`}
+                                                                />
+                                                                <label htmlFor={`task-${task.id}`}>{task.name}</label>
+                                                                <button 
+                                                                    className="task-delete"
+                                                                    onClick={() => deleteTask(date, task.id)}
+                                                                    title="Excluir tarefa"
+                                                                >
+                                                                    ×
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
                                                 <div className="day-checkbox">
                                                     <input
                                                         type="checkbox"
@@ -899,6 +1323,70 @@
                             </p>
                         </div>
                     </div>
+
+                    {showExceptionsModal && (
+                        <div className="modal-overlay" onClick={() => setShowExceptionsModal(false)}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <h3>Gerenciar Exceções</h3>
+                                    <button className="modal-close" onClick={() => setShowExceptionsModal(false)}>
+                                        ×
+                                    </button>
+                                </div>
+
+                                <div className="exception-section">
+                                    <h4>Dias da Semana</h4>
+                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+                                        Selecione os dias da semana que são exceções ao desafio:
+                                    </p>
+                                    <div className="weekday-selector">
+                                        {weekdayNames.map((name, index) => (
+                                            <div 
+                                                key={index}
+                                                className={`weekday-checkbox ${challenge.exceptions?.weekdays?.includes(index) ? 'selected' : ''}`}
+                                                onClick={() => handleWeekdayToggle(index)}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={challenge.exceptions?.weekdays?.includes(index) || false}
+                                                    onChange={() => handleWeekdayToggle(index)}
+                                                />
+                                                <label>{name.substring(0, 3)}</label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="exception-section">
+                                    <h4>Datas Específicas</h4>
+                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+                                        Adicione datas específicas que são exceções:
+                                    </p>
+                                    <div className="add-date-exception">
+                                        <input
+                                            type="date"
+                                            value={newExceptionDate}
+                                            onChange={(e) => setNewExceptionDate(e.target.value)}
+                                            min={challenge.startDate}
+                                            max={challenge.endDate}
+                                        />
+                                        <button onClick={handleAddSpecificDate}>Adicionar</button>
+                                    </div>
+                                    
+                                    {challenge.exceptions?.specificDates?.length > 0 && (
+                                        <div className="specific-dates-list">
+                                            {challenge.exceptions.specificDates.map(date => (
+                                                <div key={date} className="date-exception-item">
+                                                    <span>{new Date(date).toLocaleDateString('pt-BR')}</span>
+                                                    <button onClick={() => handleRemoveSpecificDate(date)}>×</button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         }
